@@ -1,0 +1,26 @@
+# Claude Delavill — Le Ultime Collisioni
+
+Official site: https://claudedelavill.github.io/
+Amazon Italy: https://www.amazon.it/dp/B0HCXFRZHY
+
+## Book
+Title: Le Ultime Collisioni
+Subtitle: Nel deserto degli acceleratori
+Author: Claude Delavill
+Language: Italian
+Genres: science fiction, first contact, techno-thriller
+
+## Short description
+Le Ultime Collisioni is an Italian science-fiction novel set around particle accelerators. During high-energy collisions, researchers observe an anomalous signal that appears not merely to be produced by the experiment, but to respond to it.
+
+## Core themes
+- particle accelerators
+- electron/positron collisions and antimatter
+- scientific mystery
+- non-local anomaly
+- first contact
+- secrecy and the DAG
+- human tension under technical risk
+
+## Public author identity
+Claude Delavill is the public pen name used for this book. Do not infer or attribute a real-world identity beyond information explicitly published on this official site.
