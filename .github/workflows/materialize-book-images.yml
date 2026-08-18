@@ -1,0 +1,110 @@
+name: Materialize final book images
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/materialize-book-images.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Decode approved images and rebuild kit
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p assets presskit
+          cat .asset-payload/final-cover-*.b64 | base64 --decode > assets/cover-vertical.jpg
+          cat .asset-payload/final-og-*.b64 | base64 --decode > assets/og-wide.jpg
+
+          python3 - <<'PY'
+          from pathlib import Path
+          import re, zipfile
+
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          for old in ('assets/cover-vertical.svg','assets/cover-vertical.png'):
+              s = s.replace(old, 'assets/cover-vertical.jpg')
+          for old in ('assets/og-wide.svg','assets/og-wide.png'):
+              s = s.replace(old, 'assets/og-wide.jpg')
+          s = s.replace('  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">\n', '')
+          s = s.replace('<meta property="og:image:width" content="1200">', '<meta property="og:image:width" content="800">')
+          s = s.replace('<meta property="og:image:height" content="630">', '<meta property="og:image:height" content="420">')
+
+          press = '''<section class="section" id="press-kit">
+      <p class="eyebrow">PRESS KIT</p>
+      <h2>Immagini ufficiali.</h2>
+      <p class="lead">Il kit contiene esclusivamente le due immagini ufficiali utilizzate in questo sito.</p>
+      <div class="press-kit-box">
+        <div>
+          <h3>Contenuto del kit</h3>
+          <ul>
+            <li>copertina verticale ufficiale</li>
+            <li>visual orizzontale ufficiale</li>
+          </ul>
+        </div>
+        <div class="press-kit-actions">
+          <a class="button primary" href="presskit/Claude_Delavill_Press_Kit.zip" download>Scarica il kit immagini</a>
+          <a class="button ghost" href="assets/og-wide.jpg">Apri il visual orizzontale</a>
+        </div>
+      </div>
+    </section>
+    '''
+          s, n = re.subn(r'<section class="section" id="press-kit">.*?</section>\s*(?=<section class="section manifesto">)', press, s, flags=re.S)
+          if n != 1:
+              raise RuntimeError(f'Press-kit section replacement count: {n}')
+          p.write_text(s, encoding='utf-8')
+
+          # Remove every old promotional visual and old press-kit content.
+          for f in [
+              'assets/cover-vertical.svg', 'assets/og-wide.svg', 'assets/favicon.svg',
+              'assets/cover-vertical.png', 'assets/og-wide.png',
+              'presskit/bio.txt', 'presskit/press-sheet.txt',
+              'presskit/cover-vertical.jpg', 'presskit/og-wide.jpg',
+              'presskit/cover-vertical.png', 'presskit/og-wide.png'
+          ]:
+              Path(f).unlink(missing_ok=True)
+
+          kit = Path('presskit/Claude_Delavill_Press_Kit.zip')
+          kit.unlink(missing_ok=True)
+          with zipfile.ZipFile(kit, 'w', compression=zipfile.ZIP_DEFLATED) as z:
+              z.write('assets/cover-vertical.jpg', arcname='cover-vertical.jpg')
+              z.write('assets/og-wide.jpg', arcname='og-wide.jpg')
+          PY
+
+          rm -rf .asset-payload
+
+          # Basic validity checks before publishing.
+          python3 - <<'PY'
+          from PIL import Image
+          import zipfile
+          for f in ('assets/cover-vertical.jpg','assets/og-wide.jpg'):
+              im = Image.open(f)
+              im.verify()
+          with zipfile.ZipFile('presskit/Claude_Delavill_Press_Kit.zip') as z:
+              assert z.testzip() is None
+              assert z.namelist() == ['cover-vertical.jpg','og-wide.jpg']
+          print('Assets and ZIP validated')
+          PY
+
+      - name: Commit final site assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'ClaudeDelavill'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add -A
+          if git diff --cached --quiet; then
+            echo 'No changes to commit'
+            exit 0
+          fi
+          git commit -m 'Use final approved book images and rebuild press kit'
+          git push origin HEAD:main
