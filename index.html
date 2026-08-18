@@ -51,7 +51,7 @@
         </div>
       </section>
       <figure class="hero-cover">
-        <img src="assets/cover-home.jpg" alt="Copertina di Le Ultime Collisioni di Claude Delavill" width="478" height="739">
+        <img id="home-cover" src="assets/cover-home.jpg" alt="Copertina di Le Ultime Collisioni di Claude Delavill" width="200" height="300">
       </figure>
     </div>
   </header>
@@ -82,5 +82,11 @@
     </section>
   </main>
   <footer><p><strong>Claude Delavill</strong> · Le Ultime Collisioni</p><p class="small">Sito ufficiale. Nessun cookie di profilazione, nessun tracker, nessun modulo di raccolta dati.</p><p class="small"><a href="privacy.html">Privacy</a></p></footer>
+  <script>
+    fetch('assets/cover-home-new.b64')
+      .then(function (response) { if (!response.ok) throw new Error('cover'); return response.text(); })
+      .then(function (data) { document.getElementById('home-cover').src = 'data:image/jpeg;base64,' + data.trim(); })
+      .catch(function () {});
+  </script>
 </body>
 </html>
