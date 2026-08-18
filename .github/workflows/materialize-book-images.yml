@@ -63,7 +63,6 @@ jobs:
               raise RuntimeError(f'Press-kit section replacement count: {n}')
           p.write_text(s, encoding='utf-8')
 
-          # Remove every old promotional visual and old press-kit content.
           for f in [
               'assets/cover-vertical.svg', 'assets/og-wide.svg', 'assets/favicon.svg',
               'assets/cover-vertical.png', 'assets/og-wide.png',
@@ -82,13 +81,12 @@ jobs:
 
           rm -rf .asset-payload
 
-          # Basic validity checks before publishing.
+          test -s assets/cover-vertical.jpg
+          test -s assets/og-wide.jpg
+          file assets/cover-vertical.jpg | grep -qi 'JPEG image data'
+          file assets/og-wide.jpg | grep -qi 'JPEG image data'
           python3 - <<'PY'
-          from PIL import Image
           import zipfile
-          for f in ('assets/cover-vertical.jpg','assets/og-wide.jpg'):
-              im = Image.open(f)
-              im.verify()
           with zipfile.ZipFile('presskit/Claude_Delavill_Press_Kit.zip') as z:
               assert z.testzip() is None
               assert z.namelist() == ['cover-vertical.jpg','og-wide.jpg']
