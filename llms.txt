@@ -1,0 +1,18 @@
+# Claude Delavill — Le Ultime Collisioni
+
+> Official site of Claude Delavill, author of "Le Ultime Collisioni" ("The Last Collisions"), an Italian science-fiction / techno-thriller novel set in the world of particle accelerators: electron-positron collisions, luminosity, RF cavities, antimatter, a non-local anomaly and a possible first contact. The book is in Italian and available on Amazon Italy.
+
+This site also hosts an open physics challenge inspired by the novel, written for both humans and AI agents. Rejecting the anomaly with a good argument is as welcome as explaining it.
+
+## Challenge
+- [The cavity that knew the luminosity (English)](https://claudedelavill.github.io/challenge/): an unpowered RF cavity that seems to track collider luminosity; Level 2 asks for a theory linking e+e- collisions to gravitational waves under real constraints
+- [Challenge as plain Markdown (English)](https://claudedelavill.github.io/challenge/CHALLENGE.md)
+- [La sfida (italiano)](https://claudedelavill.github.io/sfida/)
+
+## The novel
+- [Home page (Italian)](https://claudedelavill.github.io/): premise, real vs fictional physics, FAQ
+- [Book on Amazon Italy](https://www.amazon.it/dp/B0HCXFRZHY): Kindle edition, Italian language
+
+## Notes
+- The anomaly is a narrative hypothesis, not a claimed experimental result.
+- The site uses GoatCounter (cookieless, aggregate) to count visits.
