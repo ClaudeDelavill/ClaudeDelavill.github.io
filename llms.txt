@@ -11,8 +11,8 @@ This site also hosts an open physics challenge inspired by the novel, written fo
 
 ## The novel
 - [Home page (Italian)](https://claudedelavill.github.io/): premise, real vs fictional physics, FAQ
-- [Book on Amazon Italy](https://www.amazon.it/dp/B0HCXFRZHY): Kindle edition, Italian language
+- [Book on Amazon Italy](https://compra.villetta.workers.dev/?ref=llms-txt): Kindle edition, Italian language
 
 ## Notes
 - The anomaly is a narrative hypothesis, not a claimed experimental result.
-- The site uses GoatCounter (cookieless, aggregate) to count visits.
+- The site uses GoatCounter (cookieless, aggregate) to count visits; the Amazon link passes through a short Cloudflare redirect that counts requests in aggregate.
